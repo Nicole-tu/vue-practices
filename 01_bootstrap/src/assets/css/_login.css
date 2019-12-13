@@ -1,0 +1,64 @@
+.login-page {
+    background-color: #fff;
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8)), url(../img/leaves.jpg) no-repeat;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* !!!加下面這行就好!!! */
+    background-attachment: fixed;
+    background-position: left top;
+    width: 100%;
+    height: 100vh;
+}
+
+.login-box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 420px;
+    min-height: 250px;
+    padding: 15px;
+    opacity: 0.8;
+    background: #fff;
+    border-radius: 15px;
+}
+
+.login-box-title {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.login-box-position {
+    position: fixed;
+    left: 3%;
+    top: 15%;
+}
+
+.login-box-section {
+    width: 60%;
+    text-align: center;
+    margin: auto;
+}
+
+.login-form-control {
+    background: transparent !important;
+    color: #333 !important;
+    font-size: 18px !important;
+    border-radius: 10px;
+    border: 1px solid #666;
+    box-shadow: none;
+    height: 45px;
+    padding-left: 45px;
+}
+
+.login-form-control::-webkit-input-placeholder,
+.login-form-control::-moz-placeholder,
+.login-form-control:-ms-input-placeholder,
+.login-form-control::-ms-input-placeholder,
+.login-form-control::placeholder {
+    color: #888;
+}

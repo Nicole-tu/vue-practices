@@ -1,0 +1,131 @@
+.photo-banner {
+    .carousel-outer {
+        margin: 132px 0 120px 0;
+    }
+}
+
+.carousel-dark {
+    .sec-title {
+        h3 {
+            color: #ffffff;
+        }
+    }
+
+    .custom-dots-container {
+        .owl-dot {
+            span {
+                background-color: #ffffff;
+            }
+
+            &.active {
+                border-bottom: 1px solid #ffffff;
+
+                span {
+                    background-color: #ffffff;
+                }
+            }
+        }
+    }
+
+    .film-carousel {
+        .item {
+            h4 {
+                color: #ffffff;
+            }
+        }
+    }
+}
+
+.film-carousel {
+    .owl-stage-outer {
+        padding: 15px;
+        margin: -15px;
+    }
+
+    .item {
+        .bg-img {
+            padding-bottom: 145%;
+            margin-bottom: 16px;
+            position: relative;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.25);
+            transition: $transition-basic;
+            z-index: 1;
+
+            .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                padding: 28px 28px 28px 28px;
+                background-color: rgba(32, 42, 54, .8);
+                text-align: left;
+                opacity: 0;
+                color: #ffffff;
+                transition: $transition-basic;
+                overflow: hidden;
+
+                h3,
+                p {
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                }
+
+                h3 {
+                    max-height: 94px;
+                    -webkit-line-clamp: 3;
+                    transform: translateY(40%);
+                    font-size: 24px;
+                    color: #ffffff;
+                    transition: $transition-basic;
+                }
+
+                p {
+                    max-height: 229px;
+                    -webkit-line-clamp: 11;
+                    font-size: 14px;
+                    transition: $transition-basic;
+
+                    &:last-child {
+                        transform: translateX(40%);
+                    }
+                }
+            }
+        }
+
+        h4 {
+            transition: $transition-basic;
+            margin-bottom: 48px;
+            font-size: 18px;
+            text-align: left;
+        }
+
+        &:hover {
+            .bg-img {
+                padding-bottom: 145%;
+                margin-bottom: 16px;
+                transform: scale(1.05);
+                box-shadow: 0px 11px 17px rgba(0, 0, 0, 0.25);
+
+                .overlay {
+                    opacity: 1;
+
+                    h3 {
+                        transform: translateY(0%);
+                    }
+
+                    p:last-child {
+                        transform: translateX(0);
+                    }
+                }
+            }
+
+            h4 {
+                transform: translateY(-125%);
+                opacity: 0;
+            }
+        }
+
+    }
+}
