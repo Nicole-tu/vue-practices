@@ -6,17 +6,29 @@
       <div class="navbar-collapse collapse w-100 order-1 order-md-0">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item w-120">
-            <router-link class="nav-link" :to="{ name: 'calendar' }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'calendar' }"
+              :class="{ active: nowRoute == 'calendar' }"
+            >
               <font-awesome-icon icon="calendar-day" size="lg" /> Calendar
             </router-link>
           </li>
           <li class="nav-item w-120">
-            <a class="nav-link" href="javascript:;">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'notes' }"
+              :class="{ active: nowRoute == 'notes' }"
+            >
               <font-awesome-icon icon="sticky-note" size="lg" /> Notes
-            </a>
+            </router-link>
           </li>
           <li class="nav-item w-120">
-            <router-link class="nav-link" :to="{ name: 'quotes' }">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'quotes' }"
+              :class="{ active: nowRoute == 'quotes' }"
+            >
               <font-awesome-icon icon="quote-left" size="lg" /> Quotes
             </router-link>
           </li>
@@ -30,10 +42,10 @@
       <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="javascript:;"
+            <router-link class="nav-link" :to="{ name: 'calendar' }"
               ><font-awesome-icon icon="bell" size="lg" />
               <span class="badge badge-pill badge-danger badge-notify">3</span>
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" href="javascript:;"
@@ -57,6 +69,9 @@ export default {
     return {};
   },
   computed: {
+    nowRoute() {
+      return this.$route.name;
+    },
     userName() {
       return this.$store.getters.userName;
     },

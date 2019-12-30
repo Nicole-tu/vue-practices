@@ -90,6 +90,7 @@ export default {
         return;
       }
       this.$store.dispatch("setUserName", this.form.userName);
+      localStorage.setItem("user", this.form.userName);
       this.$router.push({ name: "home" });
     },
     goReset() {

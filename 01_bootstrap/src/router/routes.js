@@ -22,6 +22,11 @@ const routes = [{
                 path: "/Calendar",
                 name: "calendar",
                 component: Calendar
+            },
+            {
+                path: "/Notes",
+                name: "notes",
+                component: {}
             }
         ]
     },

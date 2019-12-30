@@ -7,7 +7,8 @@ import {
   dom
 } from "@fortawesome/fontawesome-svg-core";
 import {
-  fab
+  fab,
+  faGoogle
 } from "@fortawesome/free-brands-svg-icons";
 import {
   fas
@@ -28,7 +29,7 @@ import "./assets/css/basic.css";
 import router from "./router";
 import store from "./store";
 
-library.add(fas, far, fab);
+library.add(fas, far, fab, faGoogle);
 dom.watch();
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

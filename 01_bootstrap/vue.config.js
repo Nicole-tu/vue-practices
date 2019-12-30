@@ -4,7 +4,8 @@ module.exports = {
   chainWebpack: config => {
     plugins: [
       new GoogleFontsPlugin({
-        fonts: [{
+        fonts: [
+          {
             family: "Source Sans Pro"
           },
           {
@@ -65,11 +66,16 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        data: `
+        prependData: `
             @import "@assets/css/basic.css";
           `
+      },
+      sass: {
+        sassOptions: {
+          indentedSyntax: true
+        }
       }
     }
   },
-  filenameHashing: false,
+  filenameHashing: false
 };
