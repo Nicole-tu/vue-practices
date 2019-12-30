@@ -2,27 +2,61 @@
   <div class="calendar-page">
     <div class="calendar-auth-buttons">
       <button class="btn btn-primary" v-if="!authorized" @click="signIn">
-        <font-awesome-icon :icon="['fab', 'google']" size="lg" />| Sign in
+        <font-awesome-icon :icon="['fab', 'google']" size="lg" />&nbsp;&nbsp;| Sign in
       </button>
       <button class="btn btn-danger" v-if="authorized" @click="signOut">
-        <font-awesome-icon :icon="['fab', 'google']" size="lg" />| Sign out
+        <font-awesome-icon :icon="['fab', 'google']" size="lg" />&nbsp;&nbsp;| Sign out
       </button>
+      <div class="form-group tip" v-show="authorized">
+        <i class="fa fa-info-circle"></i>
+        You are log in with google account.
+      </div>
     </div>
-    <div ref="calendar-table" v-html="calendarView"></div>
+    <hr />
+    <div class="form-group form-inline" v-show="authorized">
+      <label style="margin-right:20px;">Calendars:</label>
+      <select class="form-control" @change="changeCalendar" v-model="calendarData">
+        <option
+          v-for="(calendar,c) in calendars"
+          :key="c"
+          :value="calendar"
+          :selected="c===0"
+        >{{ calendar.summary }}</option>
+      </select>
+    </div>
+    <br />
+    <full-calendar ref="calendar" :events="events" :config="config"></full-calendar>
   </div>
 </template>
 <script>
 import apiConfig from "../../config/credentials";
+import { FullCalendar } from "vue-full-calendar";
 
 export default {
-  components: {},
+  components: { FullCalendar },
   data() {
     return {
       authorized: false,
       items: undefined,
       api: undefined,
       auth: undefined,
-      calendarView: ""
+      calendarView: "",
+      calendarData: null,
+      calendars: [],
+      config: {
+        allDaySlot: false,
+        navLinks: true,
+        firstDay: 1,
+        buttonText: {
+          today: "TODAY",
+          month: "Month",
+          week: "Week",
+          day: "Day"
+        }
+      },
+      events: [],
+      moment: this.moment,
+      todayEvents: []
     };
   },
   mounted() {
@@ -33,8 +67,10 @@ export default {
     script.async = true;
     script.defer = true;
     document.getElementsByTagName("head")[0].appendChild(script);
-    this.api = window.gapi;
-    this.loadInitClient();
+    this.$nextTick(() => {
+      this.api = window.gapi;
+      this.loadInitClient();
+    });
   },
   methods: {
     loadInitClient() {
@@ -58,7 +94,7 @@ export default {
           apiKey: apiConfig.apiKey,
           clientId: apiConfig.clientId,
           discoveryDocs: apiConfig.discoveryDocs,
-          scope: apiConfig.scopes
+          scope: apiConfig.scope
         },
         response => {
           let config2 = apiConfig.discoveryDocs; // only of google calendar
@@ -68,8 +104,10 @@ export default {
     },
     signIn(event) {
       this.auth.signIn().then(GoogleUser => {
+        console.log(GoogleUser);
         this.authorized = true;
-        this.getData();
+        this.getCalendars();
+        this.getUpcomingEvents();
       });
     },
     signOut(event) {
@@ -77,9 +115,8 @@ export default {
         this.authorized = false;
       });
     },
-    getData() {
+    getCalendars() {
       let vm = this;
-      let moment = this.moment;
       let timeZone = "";
 
       vm.api.client.calendar.calendars
@@ -94,13 +131,64 @@ export default {
               minAccessRole: "reader"
             })
             .then(calendarListResponse => {
-              console.log(calendarListResponse.result);
-              let calendars = calendarListResponse.result.items;
-              console.log(calendars.map(cal => cal.summary));
+              this.calendars = this._.cloneDeep(
+                calendarListResponse.result.items
+              );
+              this.calendarData = this.calendars[0];
+              vm.api.client.calendar.events
+                .list({
+                  calendarId: this.calendarData.id,
+                  timeMin: new Date().toISOString(),
+                  showDeleted: false,
+                  singleEvents: true,
+                  maxResults: 20,
+                  orderBy: "startTime"
+                })
+                .then(response => {
+                  let event = response.result.items;
+                  vm.events = this._.map(event, e => {
+                    return {
+                      title: e.summary,
+                      start: this.moment(e.start.date || e.start.dateTime),
+                      end: this.moment(e.end.date || e.end.dateTime),
+                      backgroundColor: this.calendarData.backgroundColor,
+                      editable: false,
+                      textColor: "#333"
+                    };
+                  });
+                });
             });
         });
+    },
+    changeCalendar() {
+      let vm = this;
+      let calendar = this.calendarData;
 
-      /*
+      vm.api.client.calendar.events
+        .list({
+          calendarId: calendar.id || "primary",
+          timeMin: new Date().toISOString(),
+          showDeleted: false,
+          singleEvents: true,
+          maxResults: 20,
+          orderBy: "startTime"
+        })
+        .then(response => {
+          let event = response.result.items;
+          vm.events = this._.map(event, e => {
+            return {
+              title: e.summary,
+              start: this.moment(e.start.date || e.start.dateTime),
+              end: this.moment(e.end.date || e.end.dateTime),
+              backgroundColor: calendar.backgroundColor,
+              editable: false,
+              textColor: "#333"
+            };
+          });
+        });
+    },
+    getUpcomingEvents() {
+      let vm = this;
       vm.api.client.calendar.events
         .list({
           calendarId: "primary",
@@ -111,53 +199,31 @@ export default {
           orderBy: "startTime"
         })
         .then(response => {
-          vm.items = this.syntaxHighlight(response.result.items);
-          if (response.result.items) {
-            let calendarRows = ['<table class="wellness-calendar"><tbody>'];
-            response.result.items.forEach(function(entry) {
-              var startsAt =
-                moment(entry.start.dateTime).format("L") +
-                " " +
-                moment(entry.start.dateTime).format("LT");
-              var endsAt = moment(entry.end.dateTime).format("LT");
-              calendarRows.push(
-                `<tr><td>${startsAt} - ${endsAt}</td><td>${entry.summary}</td></tr>`
-              );
-            });
-            calendarRows.push("</tbody></table>");
-            this.calendarView = calendarRows.join("");
-          }
+          let event = response.result.items;
+          vm.todayEvents = this._.filter(event, e => {
+            return this.moment(e.start.date || e.start.dateTime).isSame(
+              this.moment(),
+              "day"
+            );
+          });
+
+          this.$store.dispatch("setTodayEvents", vm.todayEvents.length);
         });
-        */
     }
   },
-  computed: {
-    week() {
-      return this.moment(this.selectedDate).isoWeek();
-    },
-    weekRange() {
-      return {
-        from: this.startWeek.toISOString(),
-        to: this.endWeek.toISOString()
-      };
-    },
-    startWeek() {
-      return this.moment()
-        .isoWeek(this.week)
-        .startOf("isoWeek");
-    },
-    endWeek() {
-      return this.moment()
-        .isoWeek(this.week)
-        .endOf("isoWeek");
-    }
-  }
+  computed: {}
 };
 </script>
 
 <style scoped>
+.calendar-page {
+  font-family: "Avenir", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei", "PingFang TC";
+}
+
 .calendar-auth-buttons {
-  text-align: justify;
   display: inline-block;
 }
+
 </style>

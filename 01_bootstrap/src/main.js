@@ -2,6 +2,8 @@ import Vue from "vue";
 import App from "./App.vue";
 import VueRouter from "vue-router";
 import VueCarousel from "vue-carousel";
+import FullCalendar from 'vue-full-calendar';
+
 import {
   library,
   dom
@@ -34,7 +36,7 @@ dom.watch();
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
-Vue.use(VueRouter, VueCarousel);
+Vue.use(VueRouter, VueCarousel, FullCalendar);
 
 Vue.config.productionTip = false;
 window.jQuery = window.$ = jQuery;

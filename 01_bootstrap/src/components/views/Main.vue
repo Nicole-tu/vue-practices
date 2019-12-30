@@ -9,7 +9,7 @@
               <router-view></router-view>
             </div>
             <div class="col-md-3">
-              <!-- <right-side /> -->
+              <right-side />
             </div>
           </div>
         </div>
@@ -20,10 +20,11 @@
 </template>
 <script>
 import NavBar from "@/components/layouts/Header";
-// import RightSide from "@/components/layouts/RightSide";
+import RightSide from "@/components/layouts/RightSide";
+
 export default {
   name: "Main",
-  components: { NavBar /*, RightSide*/ },
+  components: { NavBar, RightSide },
   data() {
     return {};
   }
