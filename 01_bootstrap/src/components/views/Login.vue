@@ -77,7 +77,11 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    if (localStorage.getItem("user")) {
+      localStorage.clear();
+    }
+  },
   methods: {
     onLogin(evt) {
       evt.preventDefault();

@@ -120,7 +120,7 @@ export default {
         hexCode = hexCode.replace(/(.)/g, "$1$1");
       }
       hexCode.replace(/../g, function(color) {
-        rgb.push(255 - parseInt(color, 0x10)); //按16进制将字符串转换为数字
+        rgb.push(255 - parseInt(color, 0x10) - 20); //按16进制将字符串转换为数字
       });
       return "rgb(" + rgb.join(",") + ")";
     }

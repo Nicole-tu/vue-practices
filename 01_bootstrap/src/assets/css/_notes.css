@@ -1,0 +1,51 @@
+.sticky {
+  min-height: 150px;
+  font-size: 24px;
+  color: #6e6e6e;
+  background: #fff7ac;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px -2px rgba(33, 33, 33, 0.3);
+}
+
+.sticky-bottom {
+  position: absolute;
+  bottom: 0px;
+  margin: 0 auto;
+}
+
+.note-board {
+  background-color: #eee;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.3);
+  margin-top: 15px;
+  padding: 0 15px;
+  min-height: 800px;
+}
+
+.fa-stack {
+  height: 1em;
+}
+
+.sticky-content {
+  background-color: transparent;
+  border: none;
+  resize: vertical;
+  width: 100%;
+  padding: 5px;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+}
+
+textarea.sticky-content {
+  font-family: "Noto Sans TC", Solway, Roboto, "Source Sans Pro", sans-serif,
+    "Solway", "Poppins", "Courgette", sans-serif, cursive;
+}
+
+.sticky-content:focus {
+  outline: none;
+  border: none;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+}
+
+.note-board .card-body {
+  padding: 0.25rem;
+}
