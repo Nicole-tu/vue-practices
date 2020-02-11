@@ -2,7 +2,12 @@ const initialState = {
     todayEvents: 0,
 }
 
-const state = Object.assign({}, initialState);
+const state = {
+    ...initialState,
+    initialState() {
+        return initialState;
+    }
+};
 
 const mutations = {
     setTodayEvents(state, todayEvents) {

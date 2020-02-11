@@ -2,7 +2,12 @@ const initialState = {
     userName: "",
 }
 
-const state = Object.assign({}, initialState);
+const state = {
+    ...initialState,
+    initialState() {
+        return initialState;
+    }
+};
 
 const mutations = {
     setUserName(state, userName) {

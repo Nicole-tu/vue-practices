@@ -7,7 +7,12 @@ const initialState = {
     moviesList: []
 };
 
-const state = Object.assign({}, initialState);
+const state = {
+    ...initialState,
+    initialState() {
+        return initialState;
+    }
+};
 
 const mutations = {
     setMoviesList(state, moviesList) {

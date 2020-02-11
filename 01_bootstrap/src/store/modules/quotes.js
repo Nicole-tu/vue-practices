@@ -33,7 +33,12 @@ const initialState = {
   ]
 };
 
-const state = Object.assign({}, initialState);
+const state = {
+  ...initialState,
+  initialState() {
+    return initialState;
+  }
+};
 
 const mutations = {
   setQuoteCategories(state, quoteCategories) {
@@ -51,7 +56,9 @@ const getters = {
 };
 
 const actions = {
-  getQuoteCategories({ commit }) {
+  getQuoteCategories({
+    commit
+  }) {
     axios
       .get("https://quotes.rest/qod/categories")
       .then(response => {
@@ -61,7 +68,9 @@ const actions = {
         console.log(error);
       });
   },
-  getQuotesData({ commit }, category) {
+  getQuotesData({
+    commit
+  }, category) {
     return axios
       .get("https://quotes.rest/qod?category=" + category)
       .then(response => {

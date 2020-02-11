@@ -1,0 +1,88 @@
+div.icon-circle {
+    margin: 10px;
+    width: 2em;
+    height: 2em;
+    border-radius: 999em;
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+span.icon-bg {
+    height: 1em;
+    margin: 0.5em -0.25em;
+    color: white;
+}
+
+.icon-svg {
+    color: black;
+}
+
+.home-page {
+    padding: 50px;
+}
+
+.info-box-content {
+    padding: 5px 10px;
+    flex: 1;
+    margin: auto;
+}
+
+.info-box-text {
+    color: #333;
+    font-weight: 600;
+}
+
+.info-box-text {
+    text-transform: uppercase;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.info-box {
+    transition: ease-in-out 0.3s;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    border-radius: .25rem;
+    padding: .5rem;
+    min-height: 80px;
+    background: #fff;
+}
+
+.info-box,
+.mb-3,
+.my-3,
+.small-box {
+    margin-bottom: 1rem !important;
+}
+
+.info-box,
+.info-box-icon {
+    display: flex !important;
+}
+
+.info-box-icon {
+    border-radius: .25rem;
+    display: block;
+    width: 3em;
+    height: 3em;
+    text-align: center;
+    font-size: 1em;
+    background-color: #666;
+    margin: auto;
+}
+
+.elevation-1>* {
+    margin: auto;
+    color: white;
+}
+
+.info-box-content svg {
+    margin-left: 5px;
+}
+
+.card-header {
+    background-color: #666;
+    color: white;
+    text-transform: uppercase;
+}
