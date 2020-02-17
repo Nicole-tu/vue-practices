@@ -2,9 +2,12 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+
+import moment from "moment";
+import "moment/locale/zh-tw";
 import Element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import locale from 'element-ui/lib/locale/lang/en';
+import locale from 'element-ui/lib/locale/lang/zh-TW';
 
 Vue.use(Element, {
   locale
@@ -12,6 +15,9 @@ Vue.use(Element, {
 
 import _ from "lodash";
 Vue.prototype._ = _;
+
+moment.locale('zh-tw');
+Vue.prototype.moment = moment;
 
 import {
   Icon
