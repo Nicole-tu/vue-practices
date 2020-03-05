@@ -1,0 +1,36 @@
+version: '3'
+services:
+  bootstrap_web:
+    image: node
+    command: npm inatall && npm run serve
+    working_dir: /app/01_bootstrap
+    volumes:
+      - ./01_bootstrap:/app/01_bootstrap
+    ports:
+      - "8000:8000"
+  firebase_web:
+    image: node
+    command: npm inatall && npm run dev
+    working_dir: /app/02_firebase
+    volumes:
+      - ./02_bootstrap:/app/02_bootstrap
+    ports:
+      - "8001:8001"
+  element_web:
+    image: node
+    command: npm inatall && npm run serve
+    working_dir: /app/03_elementui
+    volumes:
+      - ./03_elementui:/app/03_elementui
+    ports:
+      - "8002:8002"
+  weex_web:
+    image: node
+    command: npm inatall && npm run serve
+    working_dir: /app/04_weex
+    volumes:
+      - ./04_weex:/app/04_weex
+    ports:
+      - "8003:8003"
+
+
