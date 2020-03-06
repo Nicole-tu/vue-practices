@@ -1,0 +1,34 @@
+version: '3'
+services:
+  bootstrap_web:
+    image: ebiven/vue-cli
+    command: bash -c "npm install && npm run serve"
+    working_dir: /app/01_bootstrap
+    volumes:
+      - ./01_bootstrap:/app/01_bootstrap
+    ports:
+      - 8089:8080
+ # firebase_web:
+ #   image: node:lts-alpine
+ #   command: bash -c "npm install && npm run dev"
+ #   working_dir: /app/02_firebase
+ #   volumes:
+ #     - ./02_firebase:/app/02_firebase
+ #   ports:
+ #     - 8088:8080
+  element_web:
+    image: ebiven/vue-cli
+    command: bash -c "npm install && npm run serve"
+    working_dir: /app/03_elementui
+    volumes:
+      - ./03_elementui:/app/03_elementui
+    ports:
+      - 8086:8080
+#  weex_web:
+#    image: ebiven/vue-cli
+#    command: bash -c "npm install && npm run serve"
+#    working_dir: /app/04_weex
+#    volumes:
+#      - ./04_weex:/app/04_weex
+#    ports:
+#      - 8085:8080

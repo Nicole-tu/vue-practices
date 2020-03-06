@@ -4,6 +4,7 @@ import Quotes from "@/components/views/Quotes";
 import Login from "@/components/views/Login";
 import Calendar from "@/components/views/Calendar";
 import Notes from "@/components/views/Notes";
+import Bootstrap from "@/components/Bootstrap";
 
 const routes = [{
         path: "/",
@@ -34,6 +35,11 @@ const routes = [{
         path: "/Login",
         name: "login",
         component: Login
+    },
+    {
+        path: "/Bootstrap",
+        name: "bootstrap",
+        component: Bootstrap
     },
     {
         path: "*",
