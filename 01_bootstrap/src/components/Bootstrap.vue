@@ -537,6 +537,7 @@
                     class="btn btn-secondary"
                     data-toggle="tooltip"
                     data-placement="right"
+                    data-offset="-200"
                     title
                     data-original-title="Tooltip on right"
                   >Tooltip on right</button>
@@ -545,6 +546,7 @@
                     class="btn btn-secondary"
                     data-toggle="tooltip"
                     data-placement="bottom"
+                    data-offset="300"
                     title
                     data-original-title="Tooltip on bottom"
                   >Tooltip on bottom</button>
@@ -553,6 +555,7 @@
                     class="btn btn-secondary"
                     data-toggle="tooltip"
                     data-placement="left"
+                    data-offset="100"
                     title
                     data-original-title="Tooltip on left"
                   >Tooltip on left</button>
@@ -568,13 +571,13 @@
                     data-toggle="tooltip"
                     data-html="true"
                     title
-                    data-original-title="<em>Tooltip</em> <u>with</u> <b>HTML</b>"
+                    data-original-title="<em>Tooltip</em><br/> <u>with</u> <b>HTML</b>"
                   >Tooltip with HTML</button>
                 </div>
                 <br />
                 <div class="row">
                   <pre class="mx-3">&nbsp;
-      &lt;button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="&lt;em&gt;Tooltip&lt;/em&gt; &lt;u&gt;with&lt;/u&gt; &lt;b&gt;HTML&lt;/b&gt;"&gt;
+      &lt;button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="&lt;em&gt;Tooltip&lt;/em&gt; &lt;br/&gt; &lt;u&gt;with&lt;/u&gt; &lt;b&gt;HTML&lt;/b&gt;"&gt;
         Tooltip with HTML
       &lt;/button&gt;
                   </pre>
@@ -673,7 +676,7 @@
 
 <script>
 const weekOne = true;
-const weekTwo = false;
+const weekTwo = true;
 export default {
   name: "Bootstrap",
   data() {
