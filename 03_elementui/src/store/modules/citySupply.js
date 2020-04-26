@@ -47,7 +47,7 @@ const actions = {
                 let data = '<?xml version="1.0" encoding="UTF-8" ?>' + response.data;
                 parseString(data, function (err, result) {
                     if (err) {
-                        console.log("parse citylist error", err);
+                        console.error("parse citylist error", err);
                     }
                     let list = [];
                     if (data) {
@@ -62,7 +62,7 @@ const actions = {
                 });
                 resolve();
             }).catch(error => {
-                console.log(error);
+                console.error(error);
                 reject();
             });
         });
@@ -77,7 +77,7 @@ const actions = {
                     let data = '<?xml version="1.0" encoding="UTF-8" ?>' + response.data;
                     parseString(data, function (err, result) {
                         if (err) {
-                            console.log("parse arealist error", err);
+                            console.error("parse arealist error", err);
                         }
                         let list = [];
                         if (data) {
@@ -92,7 +92,7 @@ const actions = {
                     });
                     resolve();
                 }).catch(error => {
-                    console.log(error);
+                    console.error(error);
                     reject();
                 });
         });
@@ -122,7 +122,7 @@ const actions = {
                     }
                     resolve();
                 }).catch(error => {
-                    console.log(error);
+                    console.error(error);
                     reject();
                 });
         });

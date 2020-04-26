@@ -128,8 +128,7 @@ export default {
           const { latitude, longitude } = position.coords;
           this.center = latLng(latitude, longitude);
         })
-        .catch(error => {
-          console.log("Can not get location",error);
+        .catch(() => {
           this.center= [23.9738, 120.9797];
         });
     },
