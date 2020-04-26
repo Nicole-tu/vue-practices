@@ -1,13 +1,13 @@
 version: "3"
 services:
-  bootstrap_web:
-    image: ebiven/vue-cli
-    command: bash -c "npm install && npm run serve"
-    working_dir: /app/01_bootstrap
-    volumes:
-      - ./01_bootstrap:/app/01_bootstrap
-    ports:
-      - 8089:8080
+  # bootstrap_web:
+  #  image: ebiven/vue-cli
+  #  command: bash -c "npm install && npm run serve"
+  #  working_dir: /app/01_bootstrap
+  #  volumes:
+  #    - ./01_bootstrap:/app/01_bootstrap
+  #  ports:
+  #    - 8089:8080
   # firebase_web:
   #   image: node:lts-alpine
   #   command: bash -c "npm install && npm run dev"

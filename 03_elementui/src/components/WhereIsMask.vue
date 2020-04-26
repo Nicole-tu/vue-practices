@@ -1,49 +1,49 @@
 <template>
   <section>
-    <el-container>
-      <el-row>
-        <el-col :xl="12">
-          <div class="grid-content">Today is :{{ today }}</div>
-        </el-col>
-      </el-row>
-    </el-container>
+    <i class="el-icon-map-location"></i>   口罩地圖
     <el-container class="main-container">
       <el-aside>
         <div class="search-box">
-          <el-select
-            v-model="params.city"
-            placeholder="選擇城市"
-            :clearable="true"
-            :filterable="true"
-            @change="getAreaList"
-            @clear="clearCityList"
-          >
-            <el-option
-              v-for="city in cityList"
-              :key="city.value"
-              :label="city.name"
-              :value="city.value"
-            ></el-option>
-          </el-select>
-          <el-select
-            v-model="params.area"
-            placeholder="選擇區域"
-            :clearable="true"
-            :filterable="true"
-            @clear="clearAreaList"
-          >
-            <el-option
-              v-for="area in areaList"
-              :key="area.value"
-              :label="area.name"
-              :value="area.name"
-            ></el-option>
-          </el-select>
-          <el-button type="primary" round style="width:100%" @click="searchMask"
-            >搜尋</el-button
-          >
+          <el-row justify="center">
+            <el-select
+              v-model="params.city"
+              placeholder="選擇城市"
+              :clearable="true"
+              :filterable="true"
+              @change="getAreaList"
+              @clear="clearCityList"
+            >
+              <el-option
+                v-for="city in cityList"
+                :key="city.value"
+                :label="city.name"
+                :value="city.value"
+              ></el-option>
+            </el-select>
+            <el-select
+              v-model="params.area"
+              placeholder="選擇區域"
+              :clearable="true"
+              :filterable="true"
+              @clear="clearAreaList"
+            >
+              <el-option
+                v-for="area in areaList"
+                :key="area.value"
+                :label="area.name"
+                :value="area.name"
+              ></el-option>
+            </el-select>
+          </el-row>
+          <el-row :gutter="6">
+            <el-col :span="12">
+              <el-button type="secondary" round style="width:100%" @click="clearSearch">清除</el-button>
+            </el-col>
+            <el-col :span="12">
+              <el-button type="primary" round style="width:100%" @click="searchMask">搜尋</el-button>
+            </el-col>
+          </el-row>
         </div>
-        <div class="info-box"></div>
       </el-aside>
       <el-main>
         <l-map
@@ -53,19 +53,10 @@
           @update:center="centerUpdated"
           :options="{ zoomControl: false }"
         >
-          <l-tile-layer
-            :url="url"
-            :attribution="attribution"
-            min-zoom="8"
-            max-zoom="15"
-          ></l-tile-layer>
-          <!-- <l-marker :lat-lng="getCoords">
-          <l-icon :icon-url="icon" :icon-size="iconSize"></l-icon>
-          <l-popup
-            :content="popup"
-            :options="{ autoClose: false, closeOnClick: false }"
-          ></l-popup>
-          </l-marker>-->
+          <l-tile-layer :url="url" :attribution="attribution" min-zoom="8" max-zoom="20"></l-tile-layer>
+          <l-marker :lat-lng="marker.latLng" v-for="(marker,m) in markers" :key="m">
+            <l-popup :content="marker.popup" :options="{ autoClose: false, closeOnClick: false }"></l-popup>
+          </l-marker>
           <l-control-zoom position="bottomright"></l-control-zoom>
         </l-map>
       </el-main>
@@ -74,14 +65,16 @@
 </template>
 
 <script>
-// import { latLng } from "leaflet";
-import { LMap, LTileLayer, LControlZoom } from "vue2-leaflet";
+import { latLng } from "leaflet";
+import { LMap, LTileLayer, LControlZoom, LMarker, LPopup } from "vue2-leaflet";
 
 export default {
   components: {
     LMap,
     LTileLayer,
-    LControlZoom
+    LControlZoom,
+    LMarker,
+    LPopup
   },
   data() {
     return {
@@ -94,13 +87,9 @@ export default {
         "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      zoom: 10,
+      zoom: 13,
       center: [23.9738, 120.9797],
-      view: [23.9738, 120.9797],
-      bounds: {},
-      location: null,
-      gettingLocation: false,
-      today: this.moment().format("YYYY-MM-DD")
+      markers: []
     };
   },
   computed: {
@@ -115,8 +104,16 @@ export default {
         return newValue;
       }
     },
-    latlng() {
-      return this.$store.getters.latlng;
+    supplyList() {
+      return this.$store.getters.supplyList;
+    },
+    pharmacies() {
+      return this.supplyList.filter(pharmacy => {
+        if (!this.params.area) {
+          return pharmacy.properties.county === this.params.city;
+        }
+        return pharmacy.properties.town === this.params.area;
+      });
     }
   },
   methods: {
@@ -129,17 +126,20 @@ export default {
       getPosition({ timeout: 5000 })
         .then(position => {
           const { latitude, longitude } = position.coords;
-          this.center = [latitude, longitude];
+          this.center = latLng(latitude, longitude);
         })
-        .catch(() => {
-          // can not get location
+        .catch(error => {
+          console.log("Can not get location",error);
+          this.center= [23.9738, 120.9797];
         });
     },
     getCityList() {
       this.$store.dispatch("getCityList");
     },
     getAreaList(city) {
-      if (city != "") {
+      if (city != "") {        
+      this.params.area= "";
+        this.areaList=[];
         this.selectedCity = this._.find(this.cityList, c => {
           return c.value == city;
         }).name;
@@ -150,29 +150,64 @@ export default {
       this.selectedCity = "";
       this.areaList = [];
     },
-    clearAreaList() {},
+    clearAreaList(){
+      this.params.area= "";
+    },
+    clearSearch() {
+      this.selectedCity = "";
+      this.areaList = [];
+      this.params={
+        city: "",
+        area: ""
+      };
+    },
     zoomUpdated(zoom) {
       this.zoom = zoom;
     },
     centerUpdated(center) {
-      console.log(this.latlng);
       this.center = center;
     },
+    getSupplyList() {
+      return this.$store.dispatch("getSupply");
+    },
     searchMask() {
-      this.$store.dispatch("getLatLngs", {
-        city: this.selectedCity,
-        area: this.params.area
+      this.markers=[];
+      this.pharmacies.forEach(pharmacy => {
+        this.markers.push({
+          latLng: latLng(
+            pharmacy.geometry.coordinates[1],
+            pharmacy.geometry.coordinates[0]
+          ),
+          popup: `<p><strong style="font-size: 20px;">${
+            pharmacy.properties.name
+          }</strong></p>
+          <strong style="font-size: 16px; color: #d45345;">口罩剩餘數量<br>成人 ： ${
+            pharmacy.properties.mask_adult
+              ? `${pharmacy.properties.mask_adult} 個`
+              : "目前無法取得資料"
+          }<br>兒童 ： ${
+            pharmacy.properties.mask_child
+              ? `${pharmacy.properties.mask_child} 個`
+              : "目前無法取得資料"
+          }</strong><br>
+          地址: <a href="https://www.google.com/maps/search/?api=1&query=${pharmacy.geometry.coordinates[1]},${
+            pharmacy.geometry.coordinates[0]}" target=”_blank”>${pharmacy.properties.address}</a><br>
+          電話: <a href="tel:${pharmacy.properties.phone}">${pharmacy.properties.phone}</a><br>
+          <small>最後更新時間: ${pharmacy.properties.updated}</small>`
+        });
+        this.center = latLng(
+          pharmacy.geometry.coordinates[1],
+          pharmacy.geometry.coordinates[0]
+        );
       });
-      console.log(this.latlng);
-      this.centerUpdated(this.latlng);
-      // this.$store.dispatch("getSupplyList");
     }
   },
   created() {
     this.getCityList();
+    this.getSupplyList();
   },
   mounted() {
-    // this.getLocation();
+    this.getLocation();
   }
 };
 </script>
@@ -202,7 +237,7 @@ export default {
 .search-box {
   margin: 8px 0 8px 8px;
   border-radius: 10px;
-  background-color: #e9f1fc;
+  background-color:rgba(255,255,255,0.4);
   padding: 10px;
 }
 
@@ -216,6 +251,10 @@ export default {
 
 .el-col {
   border-radius: 4px;
+}
+
+.el-select{
+  width:100%;
 }
 
 .grid-content {

@@ -1,7 +1,6 @@
 import axios from "axios";
 const parseString = require("xml2js").parseString;
 const helper = "https://cors-anywhere.herokuapp.com/";
-//https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json;
 
 const initialState = {
     cityList: [],
@@ -130,10 +129,9 @@ const actions = {
     },
     getSupply({
         commit
-    }, params) {
-        // curl -X GET "https://api.maskhelp.info/api/supply?area=%E5%A4%A7%E5%AE%89%E5%8D%80&childrenMaskStatus=AVAILABLE&city=%E5%8F%B0%E5%8C%97%E5%B8%82&lat=25.043907&lng=121.5448803&maskStatus=AVAILABLE&page=0&radius=500&size=10" -H "accept: application/json"
-        axios.get("https://api.maskhelp.info/api/supply", params).then(response => {
-            commit("setSupplyList", response.data);
+    }) {
+        axios.get("https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json").then(response => {
+            commit("setSupplyList", response.data.features);
         });
     }
 };
